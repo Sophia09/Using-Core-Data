@@ -7,7 +7,7 @@
 //
 
 #import "VocabulariesViewController.h"
-#import "Vocabulary.h"
+#import "Vocabulary+CoreDataClass.h"
 #import "WordsViewController.h"
 
 @interface VocabulariesViewController ()

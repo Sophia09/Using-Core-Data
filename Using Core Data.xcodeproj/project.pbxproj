@@ -8,6 +8,14 @@
 
 /* Begin PBXBuildFile section */
 		3231451E1FFA22460029A690 /* Using_Core_Data.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 3231451D1FFA22460029A690 /* Using_Core_Data.sqlite */; };
+		323145241FFA3E3F0029A690 /* DictionaryMO+CoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 323145211FFA3E3F0029A690 /* DictionaryMO+CoreDataClass.m */; };
+		323145251FFA3E3F0029A690 /* DictionaryMO+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 323145231FFA3E3F0029A690 /* DictionaryMO+CoreDataProperties.m */; };
+		3231452E1FFA3F3F0029A690 /* Word+CoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 323145271FFA3F3F0029A690 /* Word+CoreDataClass.m */; };
+		3231452F1FFA3F3F0029A690 /* Word+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 323145291FFA3F3F0029A690 /* Word+CoreDataProperties.m */; };
+		323145301FFA3F3F0029A690 /* Vocabulary+CoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 3231452B1FFA3F3F0029A690 /* Vocabulary+CoreDataClass.m */; };
+		323145311FFA3F3F0029A690 /* Vocabulary+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 3231452D1FFA3F3F0029A690 /* Vocabulary+CoreDataProperties.m */; };
+		323145361FFB2E7E0029A690 /* MyPolicy.m in Sources */ = {isa = PBXBuildFile; fileRef = 323145351FFB2E7E0029A690 /* MyPolicy.m */; };
+		323145371FFB5FD30029A690 /* MappingModel0To2.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = 323145321FFA41440029A690 /* MappingModel0To2.xcmappingmodel */; };
 		780947D21982374000AFF91D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 780947D11982374000AFF91D /* Foundation.framework */; };
 		780947D41982374000AFF91D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 780947D31982374000AFF91D /* CoreGraphics.framework */; };
 		780947D61982374000AFF91D /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 780947D51982374000AFF91D /* UIKit.framework */; };
@@ -22,13 +30,11 @@
 		780947F31982374100AFF91D /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 780947D71982374000AFF91D /* CoreData.framework */; };
 		780947FB1982374100AFF91D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 780947F91982374100AFF91D /* InfoPlist.strings */; };
 		780947FD1982374100AFF91D /* Using_Core_DataTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 780947FC1982374100AFF91D /* Using_Core_DataTests.m */; };
-		780948081982435500AFF91D /* Vocabulary.m in Sources */ = {isa = PBXBuildFile; fileRef = 780948071982435500AFF91D /* Vocabulary.m */; };
 		7809481719824B3200AFF91D /* VocabulariesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7809481619824B3200AFF91D /* VocabulariesViewController.m */; };
 		7823E3FA19862925003F8F7F /* WordsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7823E3F919862925003F8F7F /* WordsViewController.m */; };
 		7823E3FE19863BF8003F8F7F /* AddWordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7823E3FC19863BF8003F8F7F /* AddWordViewController.m */; };
 		7823E3FF19863BF8003F8F7F /* AddWordViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7823E3FD19863BF8003F8F7F /* AddWordViewController.xib */; };
 		789481CA1989DB2A0000316C /* Using_Core_Data.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 789481C61989DB2A0000316C /* Using_Core_Data.xcdatamodeld */; };
-		789481CB1989DB2A0000316C /* Word.m in Sources */ = {isa = PBXBuildFile; fileRef = 789481C91989DB2A0000316C /* Word.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -43,6 +49,22 @@
 
 /* Begin PBXFileReference section */
 		3231451D1FFA22460029A690 /* Using_Core_Data.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = Using_Core_Data.sqlite; sourceTree = "<group>"; };
+		3231451F1FFA3CB50029A690 /* Using_Core_Data 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Using_Core_Data 2.xcdatamodel"; sourceTree = "<group>"; };
+		323145201FFA3E3F0029A690 /* DictionaryMO+CoreDataClass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "DictionaryMO+CoreDataClass.h"; sourceTree = "<group>"; };
+		323145211FFA3E3F0029A690 /* DictionaryMO+CoreDataClass.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "DictionaryMO+CoreDataClass.m"; sourceTree = "<group>"; };
+		323145221FFA3E3F0029A690 /* DictionaryMO+CoreDataProperties.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "DictionaryMO+CoreDataProperties.h"; sourceTree = "<group>"; };
+		323145231FFA3E3F0029A690 /* DictionaryMO+CoreDataProperties.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "DictionaryMO+CoreDataProperties.m"; sourceTree = "<group>"; };
+		323145261FFA3F3F0029A690 /* Word+CoreDataClass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Word+CoreDataClass.h"; sourceTree = "<group>"; };
+		323145271FFA3F3F0029A690 /* Word+CoreDataClass.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "Word+CoreDataClass.m"; sourceTree = "<group>"; };
+		323145281FFA3F3F0029A690 /* Word+CoreDataProperties.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Word+CoreDataProperties.h"; sourceTree = "<group>"; };
+		323145291FFA3F3F0029A690 /* Word+CoreDataProperties.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "Word+CoreDataProperties.m"; sourceTree = "<group>"; };
+		3231452A1FFA3F3F0029A690 /* Vocabulary+CoreDataClass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Vocabulary+CoreDataClass.h"; sourceTree = "<group>"; };
+		3231452B1FFA3F3F0029A690 /* Vocabulary+CoreDataClass.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "Vocabulary+CoreDataClass.m"; sourceTree = "<group>"; };
+		3231452C1FFA3F3F0029A690 /* Vocabulary+CoreDataProperties.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Vocabulary+CoreDataProperties.h"; sourceTree = "<group>"; };
+		3231452D1FFA3F3F0029A690 /* Vocabulary+CoreDataProperties.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "Vocabulary+CoreDataProperties.m"; sourceTree = "<group>"; };
+		323145321FFA41440029A690 /* MappingModel0To2.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; path = MappingModel0To2.xcmappingmodel; sourceTree = "<group>"; };
+		323145341FFB2E7E0029A690 /* MyPolicy.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyPolicy.h; sourceTree = "<group>"; };
+		323145351FFB2E7E0029A690 /* MyPolicy.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyPolicy.m; sourceTree = "<group>"; };
 		780947CE1982374000AFF91D /* Using Core Data.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Using Core Data.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		780947D11982374000AFF91D /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		780947D31982374000AFF91D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -60,8 +82,6 @@
 		780947F81982374100AFF91D /* Using Core DataTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Using Core DataTests-Info.plist"; sourceTree = "<group>"; };
 		780947FA1982374100AFF91D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		780947FC1982374100AFF91D /* Using_Core_DataTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Using_Core_DataTests.m; sourceTree = "<group>"; };
-		780948061982435500AFF91D /* Vocabulary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Vocabulary.h; sourceTree = "<group>"; };
-		780948071982435500AFF91D /* Vocabulary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Vocabulary.m; sourceTree = "<group>"; };
 		7809481519824B3200AFF91D /* VocabulariesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VocabulariesViewController.h; sourceTree = "<group>"; };
 		7809481619824B3200AFF91D /* VocabulariesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VocabulariesViewController.m; sourceTree = "<group>"; };
 		7823E3F819862925003F8F7F /* WordsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WordsViewController.h; sourceTree = "<group>"; };
@@ -70,8 +90,6 @@
 		7823E3FC19863BF8003F8F7F /* AddWordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddWordViewController.m; sourceTree = "<group>"; };
 		7823E3FD19863BF8003F8F7F /* AddWordViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddWordViewController.xib; sourceTree = "<group>"; };
 		789481C71989DB2A0000316C /* Using_Core_Data.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Using_Core_Data.xcdatamodel; sourceTree = "<group>"; };
-		789481C81989DB2A0000316C /* Word.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Word.h; sourceTree = "<group>"; };
-		789481C91989DB2A0000316C /* Word.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Word.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -199,11 +217,22 @@
 		780948141982464700AFF91D /* coreData */ = {
 			isa = PBXGroup;
 			children = (
+				323145321FFA41440029A690 /* MappingModel0To2.xcmappingmodel */,
 				789481C61989DB2A0000316C /* Using_Core_Data.xcdatamodeld */,
-				789481C81989DB2A0000316C /* Word.h */,
-				789481C91989DB2A0000316C /* Word.m */,
-				780948061982435500AFF91D /* Vocabulary.h */,
-				780948071982435500AFF91D /* Vocabulary.m */,
+				323145261FFA3F3F0029A690 /* Word+CoreDataClass.h */,
+				323145271FFA3F3F0029A690 /* Word+CoreDataClass.m */,
+				323145281FFA3F3F0029A690 /* Word+CoreDataProperties.h */,
+				323145291FFA3F3F0029A690 /* Word+CoreDataProperties.m */,
+				3231452A1FFA3F3F0029A690 /* Vocabulary+CoreDataClass.h */,
+				3231452B1FFA3F3F0029A690 /* Vocabulary+CoreDataClass.m */,
+				3231452C1FFA3F3F0029A690 /* Vocabulary+CoreDataProperties.h */,
+				3231452D1FFA3F3F0029A690 /* Vocabulary+CoreDataProperties.m */,
+				323145201FFA3E3F0029A690 /* DictionaryMO+CoreDataClass.h */,
+				323145211FFA3E3F0029A690 /* DictionaryMO+CoreDataClass.m */,
+				323145221FFA3E3F0029A690 /* DictionaryMO+CoreDataProperties.h */,
+				323145231FFA3E3F0029A690 /* DictionaryMO+CoreDataProperties.m */,
+				323145341FFB2E7E0029A690 /* MyPolicy.h */,
+				323145351FFB2E7E0029A690 /* MyPolicy.m */,
 			);
 			name = coreData;
 			sourceTree = "<group>";
@@ -307,14 +336,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				323145361FFB2E7E0029A690 /* MyPolicy.m in Sources */,
 				7809481719824B3200AFF91D /* VocabulariesViewController.m in Sources */,
 				7823E3FA19862925003F8F7F /* WordsViewController.m in Sources */,
 				780947E41982374100AFF91D /* AppDelegate.m in Sources */,
 				789481CA1989DB2A0000316C /* Using_Core_Data.xcdatamodeld in Sources */,
 				780947E01982374100AFF91D /* main.m in Sources */,
+				3231452F1FFA3F3F0029A690 /* Word+CoreDataProperties.m in Sources */,
 				7823E3FE19863BF8003F8F7F /* AddWordViewController.m in Sources */,
-				780948081982435500AFF91D /* Vocabulary.m in Sources */,
-				789481CB1989DB2A0000316C /* Word.m in Sources */,
+				323145301FFA3F3F0029A690 /* Vocabulary+CoreDataClass.m in Sources */,
+				323145241FFA3E3F0029A690 /* DictionaryMO+CoreDataClass.m in Sources */,
+				323145311FFA3F3F0029A690 /* Vocabulary+CoreDataProperties.m in Sources */,
+				323145371FFB5FD30029A690 /* MappingModel0To2.xcmappingmodel in Sources */,
+				323145251FFA3E3F0029A690 /* DictionaryMO+CoreDataProperties.m in Sources */,
+				3231452E1FFA3F3F0029A690 /* Word+CoreDataClass.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -534,9 +569,10 @@
 		789481C61989DB2A0000316C /* Using_Core_Data.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				3231451F1FFA3CB50029A690 /* Using_Core_Data 2.xcdatamodel */,
 				789481C71989DB2A0000316C /* Using_Core_Data.xcdatamodel */,
 			);
-			currentVersion = 789481C71989DB2A0000316C /* Using_Core_Data.xcdatamodel */;
+			currentVersion = 3231451F1FFA3CB50029A690 /* Using_Core_Data 2.xcdatamodel */;
 			path = Using_Core_Data.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

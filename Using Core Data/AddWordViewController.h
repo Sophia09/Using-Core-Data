@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "Word.h"
+#import "Word+CoreDataClass.h"
 
 @class AddWordViewController;
 typedef void (^AddWordViewControllerCompletionHandler)(AddWordViewController *sender, BOOL canceled);

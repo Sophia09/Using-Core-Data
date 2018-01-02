@@ -116,37 +116,78 @@
     
     
     _persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
-    if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:nil error:&error]) {
-        /*
-         Replace this implementation with code to handle the error appropriately.
-         
-         abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development. 
-         
-         Typical reasons for an error here include:
-         * The persistent store is not accessible;
-         * The schema for the persistent store is incompatible with current managed object model.
-         Check the error message to determine what the actual problem was.
-         
-         
-         If the persistent store is not accessible, there is typically something wrong with the file path. Often, a file URL is pointing into the application's resources directory instead of a writeable directory.
-         
-         If you encounter schema incompatibility errors during development, you can reduce their frequency by:
-         * Simply deleting the existing store:
-         [[NSFileManager defaultManager] removeItemAtURL:storeURL error:nil]
-         
-         * Performing automatic lightweight migration by passing the following dictionary as the options parameter:
-         @{NSMigratePersistentStoresAutomaticallyOption:@YES, NSInferMappingModelAutomaticallyOption:@YES}
-         
-         Lightweight migration will only work for a limited set of schema changes; consult "Core Data Model Versioning and Data Migration Programming Guide" for details.
-         
-         */
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-        abort();
-    }    
     
+    /* Core Data does a few things:
+     1. analyze store's model version
+     2. compare store's model version & coordinate's model version
+     3. if they do not match, do work for migration
+     
+     solution 1 & 2 are both manual migation
+     */
+    // begin of solution 1
+    NSDictionary *options = @{
+                              NSMigratePersistentStoresAutomaticallyOption : @(YES),
+                              NSInferMappingModelAutomaticallyOption : @(YES)
+                              
+                              };
+    if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:options error:&error]) {
+        abort();
+    }
+ 
+    // begin of solution 2
+/*
+    if ([self isMannualMigrationNecessaryForStore:storeURL])
+    {
+        // data migation
+        [self migrateStore:storeURL];
+        [_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType
+                                   configuration:nil
+                                             URL:storeURL
+                                                        options:nil
+                                           error:&error];
+     
+    }
+    else {
+        NSDictionary *options = @{
+                                  NSMigratePersistentStoresAutomaticallyOption : @(YES),
+                                  NSInferMappingModelAutomaticallyOption : @(YES)
+                                  
+                                  };
+        if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:options error:&error]) {
+            abort();
+        }
+    }
+  */
     return _persistentStoreCoordinator;
 }
 
+- (BOOL)isMannualMigrationNecessaryForStore:(NSURL*)storeUrl
+{
+    NSLog(@"Running %@ '%@'", self.class, NSStringFromSelector(_cmd));
+    
+    if (![[NSFileManager defaultManager] fileExistsAtPath:storeUrl.path])
+    {
+        NSLog(@"SKIPPED MIGRATION: Source database missing.");
+        return NO;
+    }
+    
+    NSError *error = nil;
+    NSDictionary *sourceMetadata =
+    [NSPersistentStoreCoordinator metadataForPersistentStoreOfType:NSSQLiteStoreType
+                                                               URL:storeUrl error:&error];
+    NSManagedObjectModel *destinationModel = self.managedObjectModel;
+    
+    if ([destinationModel isConfiguration:nil compatibleWithStoreMetadata:sourceMetadata])
+    {
+        NSLog(@"SKIPPED MIGRATION: Source is already compatible");
+        return NO;
+    }
+    
+    return YES;
+}
+
+
+// copy default database from bundle to documents directory if there is no database file in documents
 - (void)copyDefaultSqlite {
     NSError *error;
     NSString *destinationSqlite = [[self documentsDirectoryString] stringByAppendingPathComponent:@"Using_Core_Data.sqlite"];
@@ -163,6 +204,85 @@
     }
 }
 
+- (BOOL)migrateStore:(NSURL*)sourceStore {
+    
+    NSLog(@"Running %@ '%@'", self.class, NSStringFromSelector(_cmd));
+    BOOL success = NO;
+    NSError *error = nil;
+    
+    // STEP 1 - 收集 Source源实体, Destination目标实体 和 Mapping Model文件
+    NSDictionary *sourceMetadata = [NSPersistentStoreCoordinator
+                                    metadataForPersistentStoreOfType:NSSQLiteStoreType
+                                    URL:sourceStore
+                                    error:&error];
+    
+    NSManagedObjectModel *sourceModel =
+    [NSManagedObjectModel mergedModelFromBundles:nil
+                                forStoreMetadata:sourceMetadata];
+    
+    NSManagedObjectModel *destinModel = [self managedObjectModel];
+   
+    NSMappingModel *mappingModel =
+    [NSMappingModel mappingModelFromBundles:nil
+                             forSourceModel:sourceModel
+                           destinationModel:destinModel];
+
+    
+    // STEP 2 - 开始执行 migration合并, 前提是 mapping model 不是空，或者存在
+    if (mappingModel) {
+        NSError *error = nil;
+        NSMigrationManager *migrationManager =
+        [[NSMigrationManager alloc] initWithSourceModel:sourceModel
+                                       destinationModel:destinModel];
+        [migrationManager addObserver:self
+                           forKeyPath:@"migrationProgress"
+                              options:NSKeyValueObservingOptionNew
+                              context:NULL];
+        
+        NSURL *destinStore =
+        [[self applicationDocumentsDirectory]
+         URLByAppendingPathComponent:@"Temp.sqlite"];
+        
+        success =
+        [migrationManager migrateStoreFromURL:sourceStore
+                                         type:NSSQLiteStoreType options:nil
+                             withMappingModel:mappingModel
+                             toDestinationURL:destinStore
+                              destinationType:NSSQLiteStoreType
+                           destinationOptions:nil
+                                        error:&error];
+        if (success)
+        {
+            // STEP 3 - 用新的migrated store替换老的store
+            if ([self replaceStore:sourceStore withStore:destinStore])
+            {
+                NSLog(@"SUCCESSFULLY MIGRATED %@ to the Current Model",
+                      sourceStore.path);
+                [migrationManager removeObserver:self
+                                      forKeyPath:@"migrationProgress"];
+            }
+        }
+        else
+        {
+            NSLog(@"FAILED MIGRATION: %@",error);
+        }
+    }
+    else
+    {
+        NSLog(@"FAILED MIGRATION: Mapping Model is null");
+    }
+    
+    return YES; // migration已经完成
+}
+
+- (BOOL)replaceStore:(NSURL *)sourceStore withStore:(NSURL *)destinationStore {
+    NSError *error;
+    [[NSFileManager defaultManager] removeItemAtURL:sourceStore error:&error];
+    [[NSFileManager defaultManager] moveItemAtURL:destinationStore
+                                            toURL:sourceStore error:&error];
+    return YES;
+}
+
 #pragma mark - Application's Documents directory
 
 // Returns the URL to the application's Documents directory.
@@ -173,6 +293,12 @@
 
 - (NSString *)documentsDirectoryString {
     return [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
+}
+
+#pragma mark - Observer
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context {
+    
 }
 
 @end

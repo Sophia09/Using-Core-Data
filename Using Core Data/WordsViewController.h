@@ -8,8 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-#import "Vocabulary.h"
-#import "Word.h"
+#import "Vocabulary+CoreDataClass.h"
+#import "Word+CoreDataClass.h"
 
 @interface WordsViewController : UITableViewController
 
