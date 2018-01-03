@@ -9,6 +9,7 @@
 #import "VocabulariesViewController.h"
 #import "Vocabulary+CoreDataClass.h"
 #import "WordsViewController.h"
+#import "AppDelegate.h"
 
 @interface VocabulariesViewController ()
 
@@ -45,11 +46,7 @@
         Vocabulary *spanishVocabulary = (Vocabulary *)[[NSManagedObject alloc] initWithEntity:vocabularyEntityDescriptor insertIntoManagedObjectContext:self.managedContext];
         [spanishVocabulary setName:@"Spanish"];
         
-        NSError *error;
-        if (![self.managedContext save:&error])
-        {
-            NSLog(@"Error saving context: %@", error);
-        }
+        [self saveContext];
         
         UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(add)];
         self.navigationItem.rightBarButtonItem = addButton;
@@ -123,11 +120,7 @@
         NSManagedObject *deleted = [self.fetchedResultsController objectAtIndexPath:indexPath];
         [self.managedContext deleteObject:deleted];
         
-        NSError *error;
-        if (![self.managedContext save:&error])
-        {
-            NSLog(@"Error saving context: %@", error);
-        }
+        [self saveContext];
         [self fetchVovabularies];
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationRight];
         
@@ -175,6 +168,11 @@
 
 #pragma mark - helper method
 
+- (void)saveContext {
+    AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+    [appDelegate saveMainContext];
+}
+
 // Fetch all vocabularies in the data model and stores them in the fetchedResultsController property
 - (void)fetchVovabularies
 {
@@ -217,11 +215,7 @@
         NSEntityDescription *vocabularyEntityDescription = [NSEntityDescription entityForName:@"Vocabulary" inManagedObjectContext:self.managedContext];
         Vocabulary *newVocabulary = (Vocabulary *)[[NSManagedObject alloc] initWithEntity:vocabularyEntityDescription insertIntoManagedObjectContext:self.managedContext];
         newVocabulary.name = [alertView textFieldAtIndex:0].text;
-        NSError *error;
-        if (![self.managedContext save:&error])
-        {
-            NSLog(@"Error saving context: %@", error);
-        }
+        [self saveContext];
         [self fetchVovabularies];
         [self.tableView reloadData];
     }

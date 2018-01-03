@@ -10,7 +10,6 @@
 #import "AddWordViewController.h"
 #import "AppDelegate.h"
 
-
 @interface WordsViewController ()
 
 @end
@@ -87,11 +86,7 @@
              inNavigationController:self.navigationController
                          completion:^(AddWordViewController *sender, BOOL canceled)
      {
-         NSError *error;
-         if (![self.vocabulary.managedObjectContext save:&error])
-         {
-             NSLog(@"Error saving context: %@", error);
-         }
+         [self saveContext];
          [self.tableView reloadData];
          [self.navigationController popViewControllerAnimated:YES];
      }];
@@ -114,11 +109,7 @@
         // Delete the row from the data source
         Word *word = [self.vocabulary.words.allObjects objectAtIndex:indexPath.row];
         [self.vocabulary.managedObjectContext deleteObject:word];
-        NSError *error;
-        if (![self.vocabulary.managedObjectContext save:&error])
-        {
-            NSLog(@"Error saving context: %@", error);
-        }
+        [self saveContext];
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
     }   
     else if (editingStyle == UITableViewCellEditingStyleInsert) {
@@ -155,9 +146,13 @@
 
  */
 
+- (void)saveContext {
+    AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+    [appDelegate saveMainContext];
+}
+
 - (void)add
 {
-//    NSManagedObjectContext *context = ((AppDelegate *)[UIApplication sharedApplication].delegate).managedObjectContext;
     NSEntityDescription *wordEntityDescription = [NSEntityDescription entityForName:@"Word" inManagedObjectContext:self.vocabulary.managedObjectContext];
     Word *newWord = (Word *)[[NSManagedObject alloc] initWithEntity:wordEntityDescription insertIntoManagedObjectContext:self.vocabulary.managedObjectContext];
     
@@ -172,10 +167,7 @@
          else
          {
              [self.vocabulary addWordsObject:newWord];
-             NSError *error;
-             if (![self.vocabulary.managedObjectContext save:&error]) {
-                 NSLog(@"Error saving context: %@", error);
-             }
+             [self saveContext];
              [self.tableView reloadData];
              
          }

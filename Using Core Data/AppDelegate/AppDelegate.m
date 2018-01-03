@@ -65,18 +65,21 @@
 
 - (void)saveMainContext
 {
-    NSError *error = nil;
     NSManagedObjectContext *mainMOC = self.mainMOC;
     if (mainMOC != nil) {
-        if ([mainMOC hasChanges] && ![mainMOC save:&error]) {
-             // Replace this implementation with code to handle the error appropriately.
-             // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development. 
-            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-            abort();
-        } 
+        [mainMOC performBlock:^{
+            NSError *error = nil;
+            if ([mainMOC hasChanges] && ![mainMOC save:&error]) {
+                // Replace this implementation with code to handle the error appropriately.
+                // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+                NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+                abort();
+            }
+        }];
     }
 }
 
+// backgroungMOC 调用 save 方法将改变 push 到 mainMOC（此时内存中的上下午已经改变）, 再由 mainMOC 将改变写到存储区
 - (void)saveBackgroungContext {
     if (_backgroundMOC) {
         [_backgroundMOC performBlock:^{
