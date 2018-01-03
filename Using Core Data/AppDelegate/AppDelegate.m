@@ -8,11 +8,16 @@
 
 #import "AppDelegate.h"
 
-@implementation AppDelegate
+@interface AppDelegate()
 
-@synthesize managedObjectContext = _managedObjectContext;
-@synthesize managedObjectModel = _managedObjectModel;
-@synthesize persistentStoreCoordinator = _persistentStoreCoordinator;
+@property (readwrite, strong, nonatomic) NSManagedObjectContext *mainMOC;
+@property (readwrite, strong, nonatomic) NSManagedObjectModel *managedObjectModel;
+@property (readwrite, strong, nonatomic) NSPersistentStoreCoordinator *persistentStoreCoordinator;
+@property (readwrite, strong, nonatomic) NSManagedObjectContext *backgroundMOC;
+    
+@end
+
+@implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
@@ -21,7 +26,7 @@
     self.window.backgroundColor = [UIColor whiteColor];
     
     // Create and display the view controller in a navigation controller
-    self.vocabulariesViewController = [[VocabulariesViewController alloc] initWithManagedObjectContext:self.managedObjectContext];
+    self.vocabulariesViewController = [[VocabulariesViewController alloc] initWithManagedObjectContext:self.mainMOC];
     self.navigationController = [[UINavigationController alloc] initWithRootViewController:self.vocabulariesViewController];
     self.window.rootViewController = self.navigationController;
     
@@ -54,15 +59,16 @@
 - (void)applicationWillTerminate:(UIApplication *)application
 {
     // Saves changes in the application's managed object context before the application terminates.
-    [self saveContext];
+    [self saveBackgroungContext];
+    [self saveMainContext];
 }
 
-- (void)saveContext
+- (void)saveMainContext
 {
     NSError *error = nil;
-    NSManagedObjectContext *managedObjectContext = self.managedObjectContext;
-    if (managedObjectContext != nil) {
-        if ([managedObjectContext hasChanges] && ![managedObjectContext save:&error]) {
+    NSManagedObjectContext *mainMOC = self.mainMOC;
+    if (mainMOC != nil) {
+        if ([mainMOC hasChanges] && ![mainMOC save:&error]) {
              // Replace this implementation with code to handle the error appropriately.
              // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development. 
             NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
@@ -71,22 +77,43 @@
     }
 }
 
+- (void)saveBackgroungContext {
+    if (_backgroundMOC) {
+        [_backgroundMOC performBlock:^{
+            NSError *error;
+            if ([_backgroundMOC hasChanges] && [_backgroundMOC save:&error]) {
+                [_mainMOC performBlock:^{
+                    [self saveMainContext];
+                }];
+            }
+        }];
+    }
+}
+
 #pragma mark - Core Data stack
 
 // Returns the managed object context for the application.
 // If the context doesn't already exist, it is created and bound to the persistent store coordinator for the application.
-- (NSManagedObjectContext *)managedObjectContext
+- (NSManagedObjectContext *)mainMOC
 {
-    if (_managedObjectContext != nil) {
-        return _managedObjectContext;
+    if (_mainMOC != nil) {
+        return _mainMOC;
     }
     
     NSPersistentStoreCoordinator *coordinator = [self persistentStoreCoordinator];
     if (coordinator != nil) {
-        _managedObjectContext = [[NSManagedObjectContext alloc] init];
-        [_managedObjectContext setPersistentStoreCoordinator:coordinator];
+        _mainMOC = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
+        [_mainMOC setPersistentStoreCoordinator:coordinator];
     }
-    return _managedObjectContext;
+    return _mainMOC;
+}
+
+// 私有队列用以执行耗时操作
+- (NSManagedObjectContext *)backgroundMOC {
+
+    _backgroundMOC = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
+    _backgroundMOC.parentContext = _mainMOC;
+    return _backgroundMOC;
 }
 
 // Returns the managed object model for the application.

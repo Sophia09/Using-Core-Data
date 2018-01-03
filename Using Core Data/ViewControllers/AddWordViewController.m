@@ -10,6 +10,9 @@
 
 @interface AddWordViewController ()
 
+@property (nonatomic, strong) AddWordViewControllerCompletionHandler completionHandler;
+@property (nonatomic, strong) Word *word;
+
 @end
 
 @implementation AddWordViewController

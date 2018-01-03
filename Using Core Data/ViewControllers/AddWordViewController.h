@@ -13,11 +13,6 @@
 typedef void (^AddWordViewControllerCompletionHandler)(AddWordViewController *sender, BOOL canceled);
 
 @interface AddWordViewController : UIViewController
-{
-    @private
-    AddWordViewControllerCompletionHandler _completionHandler;
-    Word *_word;
-}
 
 @property (weak, nonatomic) IBOutlet UITextField *wordTextField;
 
